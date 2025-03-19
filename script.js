@@ -169,22 +169,28 @@ function adicionarBotaoWhatsApp() {
                 width: 4em;
                 height: 4em;
                 z-index: 100;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                border-radius: 50%;
+               
+                cursor: pointer;
+                transition: transform 0.2s ease;
             }
             .gen123 svg {
-                width: 100%;
-                height: 100%;
+                width: 60%;
+                height: 60%;
+                fill: white;
             }
-            .gen123.top {
-                top: 5em;
+            .gen123:hover {
+                transform: scale(1.1);
             }
             .gen123.bottom {
-                bottom: 5em;
-            }
-            .gen123.left {
-                left: 3em;
+                bottom: 20px;
             }
             .gen123.right {
-                right: 3em;
+                right: 20px;
             }
         `;
         const style = document.createElement("style");
