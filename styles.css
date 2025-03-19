@@ -102,7 +102,7 @@ header h1 {
     display: none; /* Oculto por padrão */
     position: fixed;
     top: 0;
-    left: 360px;
+    left: 0;
     width: 250px;
     height: 100%;
     background-color: #f4f4f4;
