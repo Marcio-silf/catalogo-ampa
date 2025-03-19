@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     carregarExcelAutomaticamente();
-    adicionarBotaoWhatsApp(); // Chama a função para adicionar o botão do WhatsApp
+    adicionarBotaoWhatsApp();
 });
 
 function carregarExcelAutomaticamente() {
-    const caminhoDoArquivo = "catalogo_produtos.xlsx"; // Caminho relativo ao arquivo Excel
+    const caminhoDoArquivo = "catalogo_produtos.xlsx";
 
     fetch(caminhoDoArquivo)
         .then((response) => {
@@ -17,57 +17,107 @@ function carregarExcelAutomaticamente() {
             const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
             const produtos = XLSX.utils.sheet_to_json(sheet);
-            exibirProdutosPorDepartamento(produtos);
+            exibirProdutos(produtos); // Exibe todos os produtos
+            preencherListaDepartamentos(produtos); // Preenche a lista de departamentos
+            configurarFiltroDepartamento(produtos); // Configura o filtro por departamento
+            configurarBuscaDinamica(produtos); // Configura a busca dinâmica
+            configurarOrdenacao(produtos); // Configura a ordenação
         })
         .catch((error) => {
             console.error("Erro ao carregar o arquivo Excel:", error);
         });
 }
 
-function exibirProdutosPorDepartamento(produtos) {
-    const catalogo = document.getElementById("catalogo");
-    catalogo.innerHTML = ""; // Limpa antes de adicionar novos produtos
+function exibirProdutos(produtos) {
+    const gradeProdutos = document.getElementById("grade-produtos");
+    gradeProdutos.innerHTML = "";
 
-    // Agrupa produtos por departamento
-    const produtosPorDepartamento = produtos.reduce((acc, produto) => {
-        const departamento = produto.Departamento || "Outros";
-        if (!acc[departamento]) {
-            acc[departamento] = [];
+    produtos.forEach((produto) => {
+        const divProduto = document.createElement("div");
+        divProduto.classList.add("produto");
+        divProduto.innerHTML = `
+            <img src="imagens/${produto.Imagem}" alt="${produto.Nome}">
+            <h3>${produto.Nome}</h3>
+            <p>${produto.Departamento}</p>
+        `;
+        gradeProdutos.appendChild(divProduto);
+    });
+}
+
+function preencherListaDepartamentos(produtos) {
+    const listaDepartamentos = document.getElementById("lista-departamentos");
+    const departamentos = [...new Set(produtos.map(produto => produto.Departamento || "Outros"))];
+
+    // Limpa a lista de departamentos antes de preencher
+    listaDepartamentos.innerHTML = '<option value="">Todos os departamentos</option>';
+
+    departamentos.forEach(departamento => {
+        const option = document.createElement("option");
+        option.value = departamento;
+        option.textContent = departamento;
+        listaDepartamentos.appendChild(option);
+    });
+}
+
+function configurarFiltroDepartamento(produtos) {
+    const listaDepartamentos = document.getElementById("lista-departamentos");
+    const departamentoColuna = document.querySelector(".departamento-coluna h2");
+
+    listaDepartamentos.addEventListener("change", function () {
+        const departamentoSelecionado = this.value;
+
+        // Atualiza o nome do departamento na coluna
+        if (departamentoSelecionado) {
+            departamentoColuna.textContent = departamentoSelecionado;
+        } else {
+            departamentoColuna.textContent = "Todos os departamentos";
         }
-        acc[departamento].push(produto);
-        return acc;
-    }, {});
 
-    // Exibe os produtos por departamento
-    for (const [departamento, produtos] of Object.entries(produtosPorDepartamento)) {
-        const divDepartamento = document.createElement("div");
-        divDepartamento.classList.add("departamento");
+        // Filtra os produtos
+        const produtosFiltrados = departamentoSelecionado
+            ? produtos.filter(produto => produto.Departamento === departamentoSelecionado)
+            : produtos;
 
-        const tituloDepartamento = document.createElement("h2");
-        tituloDepartamento.textContent = departamento;
-        divDepartamento.appendChild(tituloDepartamento);
+        // Exibe os produtos filtrados
+        exibirProdutos(produtosFiltrados);
+    });
+}
 
-        const divProdutos = document.createElement("div");
-        divProdutos.classList.add("produtos-container");
+function configurarBuscaDinamica(produtos) {
+    const campoBusca = document.querySelector(".buscador input");
 
-        produtos.forEach((produto) => {
-            const divProduto = document.createElement("div");
-            divProduto.classList.add("produto");
-            divProduto.innerHTML = `
-                <img src="imagens/${produto.Imagem}" alt="${produto.Nome}">
-                <h3>${produto.Nome}</h3>
-                `;
-            divProdutos.appendChild(divProduto);
-        });
+    campoBusca.addEventListener("input", () => {
+        const termoBusca = campoBusca.value.toLowerCase();
+        const produtosFiltrados = produtos.filter(produto =>
+            produto.Nome.toLowerCase().includes(termoBusca) ||
+            produto.Departamento.toLowerCase().includes(termoBusca)
+        );
+        exibirProdutos(produtosFiltrados);
+    });
+}
 
-        divDepartamento.appendChild(divProdutos);
-        catalogo.appendChild(divDepartamento);
-    }
+function configurarOrdenacao(produtos) {
+    const ordenarProdutos = document.getElementById("ordenar-produtos");
+
+    ordenarProdutos.addEventListener("change", function () {
+        const ordem = this.value;
+        let produtosOrdenados;
+
+        if (ordem === "az") {
+            // Ordena de A-Z
+            produtosOrdenados = produtos.sort((a, b) => a.Nome.localeCompare(b.Nome));
+        } else if (ordem === "za") {
+            // Ordena de Z-A
+            produtosOrdenados = produtos.sort((a, b) => b.Nome.localeCompare(a.Nome));
+        }
+
+        // Exibe os produtos ordenados
+        exibirProdutos(produtosOrdenados);
+    });
 }
 
 function adicionarBotaoWhatsApp() {
     setTimeout(function () {
-        // Adiciona o CSS para o botão do WhatsApp
         const css = `
             .gen123 {
                 position: fixed;
@@ -97,13 +147,11 @@ function adicionarBotaoWhatsApp() {
         style.appendChild(document.createTextNode(css));
         document.head.appendChild(style);
 
-        // Cria o link do WhatsApp
         const linkWhatsApp = document.createElement("a");
-        linkWhatsApp.href = "https://wa.me/31972132922"; // Substitua pelo seu número de WhatsApp
+        linkWhatsApp.href = "https://wa.me/31972132922";
         linkWhatsApp.target = "_blank";
         linkWhatsApp.className = "gen123 bottom right";
 
-        // Adiciona o ícone do WhatsApp ao link
         const svgWhatsApp = `
             <svg enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg">
                 <path d="m20.52 3.449c-2.28-2.204-5.28-3.449-8.475-3.449-9.17 0-14.928 9.935-10.349 17.838l-1.696 6.162 6.335-1.652c2.76 1.491 5.021 1.359 5.716 1.447 10.633 0 15.926-12.864 8.454-20.307z" fill="#eceff1"/>
@@ -112,8 +160,6 @@ function adicionarBotaoWhatsApp() {
             </svg>
         `;
         linkWhatsApp.innerHTML = svgWhatsApp;
-
-        // Adiciona o link ao corpo do documento
         document.body.appendChild(linkWhatsApp);
-    }, 2000); // Aguarda 2 segundos antes de adicionar o botão
+    }, 2000);
 }
