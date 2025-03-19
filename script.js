@@ -1,4 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Referências aos elementos
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    // Função para alternar a visibilidade do sidebar
+    function toggleSidebar() {
+        if (sidebar.style.display === 'block') {
+            sidebar.style.display = 'none'; // Oculta o sidebar
+        } else {
+            sidebar.style.display = 'block'; // Exibe o sidebar
+        }
+    }
+
+    // Adiciona o evento de clique ao botão de alternância
+    menuToggle.addEventListener('click', toggleSidebar);
+
+    // Monitora o redimensionamento da tela
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            sidebar.style.display = 'none'; // Garante que o sidebar esteja oculto em telas grandes
+        }
+    });
+
     carregarExcelAutomaticamente();
     adicionarBotaoWhatsApp();
 });
@@ -46,16 +69,38 @@ function exibirProdutos(produtos) {
 
 function preencherListaDepartamentos(produtos) {
     const listaDepartamentos = document.getElementById("lista-departamentos");
+    const listaDepartamentosSidebar = document.getElementById("lista-departamentos-sidebar");
     const departamentos = [...new Set(produtos.map(produto => produto.Departamento || "Outros"))];
 
-    // Limpa a lista de departamentos antes de preencher
+    // Limpa as listas antes de preencher
     listaDepartamentos.innerHTML = '<option value="">Todos os departamentos</option>';
+    listaDepartamentosSidebar.innerHTML = '<li data-value="">Todos os departamentos</li>';
 
     departamentos.forEach(departamento => {
+        // Adiciona opção à ListBox
         const option = document.createElement("option");
         option.value = departamento;
         option.textContent = departamento;
         listaDepartamentos.appendChild(option);
+
+        // Adiciona opção ao menu lateral
+        const li = document.createElement("li");
+        li.textContent = departamento;
+        li.setAttribute("data-value", departamento);
+        listaDepartamentosSidebar.appendChild(li);
+    });
+
+    // Adiciona evento de clique ao menu lateral
+    listaDepartamentosSidebar.addEventListener("click", function (event) {
+        if (event.target.tagName === "LI") {
+            const departamentoSelecionado = event.target.getAttribute("data-value");
+            listaDepartamentos.value = departamentoSelecionado;
+            listaDepartamentos.dispatchEvent(new Event("change")); // Dispara o evento de mudança
+
+            // Oculta o sidebar após a seleção
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.display = 'none';
+        }
     });
 }
 

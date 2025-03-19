@@ -57,7 +57,21 @@ header h1 {
     max-width: 100%; /* Largura máxima para o contêiner de filtro */
 }
 
-/* Listbox de Departamentos */
+
+/* Botão de Alternância (visível apenas em telas pequenas) */
+.menu-toggle {
+    display: none; /* Oculto por padrão */
+    background-color: #23456b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    flex: 1; /* Ocupa o mesmo espaço da ListBox */
+    text-align: center;
+}
+
+/* Lista de Departamentos (ListBox) */
 #lista-departamentos {
     padding: 8px; /* Reduz o padding */
     border: 1px solid #ccc;
@@ -72,14 +86,53 @@ header h1 {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 8px center; /* Ajusta a posição do ícone */
-    background-size: 12px; /* Reduz o tamanho do ícone */
+    background-size: 10px; /* Reduz o tamanho do ícone */
     padding-right: 25px; /* Reduz o padding para o ícone */
 }
+
+
 
 #lista-departamentos:focus {
     outline: none;
     border-color: #4CAF50;
 }
+
+/* Menu Lateral (visível apenas em telas pequenas) */
+.sidebar {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    top: 0;
+    left: 360px;
+    width: 250px;
+    height: 100%;
+    background-color: #f4f4f4;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    overflow-y: auto;
+    margin-top: 180px; /* Espaço para a coluna de departamentos fixa */
+    margin-inline-end: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 1px; /* Espaço para a coluna de departamentos fixa */
+}
+
+.sidebar li {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 1px; /* Espaço para a coluna de departamentos fixa */
+}
+
+.sidebar li:hover {
+    background-color: #23456b;
+    color: white;
+}
+
 
 /* Campo de Busca */
 .buscador {
@@ -97,7 +150,7 @@ header h1 {
     padding: 6px; /* Reduz o padding */
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: 12px;
     width: 100%;
     background: transparent;
 }
@@ -122,6 +175,7 @@ header h1 {
     opacity: 0.8;
 }
 
+
 /* Ajuste no .departamento-fixo */
 .departamento-fixo {
     position: sticky; /* Fixa na parte superior */
@@ -142,33 +196,12 @@ header h1 {
     padding: 3px 3px 3px;
     margin: 0;
     border-radius: 0; /* Remove bordas arredondadas */
-    font-size: 28px;
+    font-size: 14px;
     width: 100%;
     text-align: center;
 }
 
-/* Ajuste no CLASSIFICADOR (#ordenar-produtos) */
-#ordenar-produtos {
-    padding: 8px 12px; /* Mantido o padding para melhorar a aparência */
-    border: 1px solid #ccc;
-    border-radius: 4px; /* Bordas levemente arredondadas */
-    font-size: 14px;
-    background-color: #fff;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: end 10px center;
-    background-size: 12px;
-    padding-right: 30px; /* Espaço para o ícone */
-    transition: border-color 0.3s ease; /* Transição suave */
-    margin: 10px ; /* Centralizado e adicionado margem superior */
-    display: block; /* Garante que o elemento seja exibido em bloco */
-    max-width:200px; /* Limita a largura máxima para telas grandes */
-   
-}
+
 
 .departamento-coluna h2 {
     background-color: #020d3f;
@@ -176,7 +209,7 @@ header h1 {
     padding: 15px;
     margin: 0;
     border-radius: 0; /* Remove bordas arredondadas */
-    font-size: 28px;
+    font-size: 16px;
     width: 100%;
 }
 
@@ -184,7 +217,7 @@ header h1 {
 .catalogo-container {
     flex: 1;
     padding: 20px;
-    margin-top: 15px; /* Espaço para a coluna de departamentos fixa */
+    margin-top: 10px; /* Espaço para a coluna de departamentos fixa */
 }
 
 /* Grade de produtos */
@@ -287,16 +320,28 @@ footer .ecommerce a:hover {
 
     .filtro-container {
         flex-direction: row;
-        gap: 10px;
+        gap: 5px;
     }
 
     .departamento-fixo {
-        top: 70px; /* Ajuste para telas menores */
+        top: 10px; /* Ajuste para telas menores */
     }
 
     .catalogo-container {
-        margin-top: 50px; /* Ajuste para telas menores */
+        margin-top: 30px; /* Ajuste para telas menores */
     }
+    
+.menu-toggle {
+    display: block; /* Exibe o botão de alternância em telas pequenas */
+}
+
+#lista-departamentos {
+    display: none; /* Oculta a ListBox em telas pequenas */
+}
+
+.sidebar {
+    display: block; /* Exibe o menu lateral quando o botão é clicado */
+}
 }
 
 @media (max-width: 480px) {
@@ -314,10 +359,10 @@ footer .ecommerce a:hover {
     }
 
     .departamento-fixo {
-        top: 60px; /* Ajuste para telas muito pequenas */
+        top: 40px; /* Ajuste para telas muito pequenas */
     }
 
     .catalogo-container {
-        margin-top: 40px; /* Ajuste para telas muito pequenas */
+        margin-top: 20px; /* Ajuste para telas muito pequenas */
     }
 }

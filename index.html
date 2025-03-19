@@ -11,19 +11,22 @@
         <div class="header-top">
             <img src="logo.png" alt="Logo Ampa Food" class="logo">
             <div class="header-content">
-                <h1>Catálogo - Ampa Food</h1>
+                <h1>Catálogo - AMPAFOOD</h1>
                 <div class="filtro-container">
-                    <select id="lista-departamentos">
-                        <option>Departamento 1</option>
-                        <option>Departamento 2</option>
-                    </select>
                     <div class="buscador">
                         <input type="text" placeholder="Buscar...">
                         <button>
                             <svg><!-- Ícone de busca --></svg>
                         </button>
                     </div>
-                    
+
+                    <!-- Botão de alternância (visível apenas em telas pequenas) -->
+                    <button id="menu-toggle" class="menu-toggle">☰</button>
+
+                    <!-- Lista de departamentos (visível apenas em telas grandes) -->
+                    <select id="lista-departamentos" class="listbox">
+                        <option value="">Todos os departamentos</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -32,17 +35,14 @@
             <div class="departamento-coluna">
                 <h2>Departamentos</h2>
             </div>
-            <!-- Seletor de ordenação -->
-            <div>
-                <select id="ordenar-produtos">
-                    <option value="az">Ordenar A-Z</option>
-                    <option value="za">Ordenar Z-A</option>
-                </select>
-               </div> 
         </div>
     </header>
-    
-    
+
+    <!-- Menu lateral com as opções (visível apenas em telas pequenas) -->
+    <div id="sidebar" class="sidebar">
+        <ul id="lista-departamentos-sidebar"></ul>
+    </div>
+
     <div class="catalogo-container">
         <!-- Grade de produtos -->
         <div class="grade-produtos" id="grade-produtos">
