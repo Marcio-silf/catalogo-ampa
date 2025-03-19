@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Garante que o sidebar esteja oculto ao carregar a página
+    sidebar.style.display = 'none';
+
     carregarExcelAutomaticamente();
     adicionarBotaoWhatsApp();
 });
@@ -160,6 +163,7 @@ function configurarOrdenacao(produtos) {
         exibirProdutos(produtosOrdenados);
     });
 }
+
 
 function adicionarBotaoWhatsApp() {
     setTimeout(function () {

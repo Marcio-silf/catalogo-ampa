@@ -117,7 +117,6 @@ header h1 {
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-top: 1px; /* Espaço para a coluna de departamentos fixa */
 }
 
 .sidebar li {
@@ -125,7 +124,7 @@ header h1 {
     border-bottom: 1px solid #ddd;
     cursor: pointer;
     font-size: 14px;
-    margin-top: 1px; /* Espaço para a coluna de departamentos fixa */
+    
 }
 
 .sidebar li:hover {
