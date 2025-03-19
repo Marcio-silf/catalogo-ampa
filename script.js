@@ -163,34 +163,29 @@ function configurarOrdenacao(produtos) {
 
 function adicionarBotaoWhatsApp() {
     setTimeout(function () {
+        // Adiciona o CSS para o botão do WhatsApp
         const css = `
             .gen123 {
                 position: fixed;
                 width: 4em;
                 height: 4em;
                 z-index: 100;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                
-                border-radius: 50%;
-               
-                cursor: pointer;
-                transition: transform 0.2s ease;
             }
             .gen123 svg {
-                width: 60%;
-                height: 60%;
-                fill: white;
+                width: 100%;
+                height: 100%;
             }
-            .gen123:hover {
-                transform: scale(1.1);
+            .gen123.top {
+                top: 5em;
             }
             .gen123.bottom {
-                bottom: 20px;
+                bottom: 5em;
+            }
+            .gen123.left {
+                left: 3em;
             }
             .gen123.right {
-                right: 20px;
+                right: 3em;
             }
         `;
         const style = document.createElement("style");
@@ -198,11 +193,13 @@ function adicionarBotaoWhatsApp() {
         style.appendChild(document.createTextNode(css));
         document.head.appendChild(style);
 
+        // Cria o link do WhatsApp
         const linkWhatsApp = document.createElement("a");
-        linkWhatsApp.href = "https://wa.me/31972132922";
+        linkWhatsApp.href = "https://wa.me/31972132922"; // Substitua pelo seu número de WhatsApp
         linkWhatsApp.target = "_blank";
         linkWhatsApp.className = "gen123 bottom right";
 
+        // Adiciona o ícone do WhatsApp ao link
         const svgWhatsApp = `
             <svg enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg">
                 <path d="m20.52 3.449c-2.28-2.204-5.28-3.449-8.475-3.449-9.17 0-14.928 9.935-10.349 17.838l-1.696 6.162 6.335-1.652c2.76 1.491 5.021 1.359 5.716 1.447 10.633 0 15.926-12.864 8.454-20.307z" fill="#eceff1"/>
@@ -211,6 +208,8 @@ function adicionarBotaoWhatsApp() {
             </svg>
         `;
         linkWhatsApp.innerHTML = svgWhatsApp;
+
+        // Adiciona o link ao corpo do documento
         document.body.appendChild(linkWhatsApp);
-    }, 2000);
+    }, 2000); // Aguarda 2 segundos antes de adicionar o botão
 }
